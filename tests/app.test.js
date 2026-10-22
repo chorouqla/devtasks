@@ -3,7 +3,8 @@ import {
   createTask,
   isValidTask,
   filterTasks,
-  getTaskStats
+  getTaskStats,
+  clearCompletedTasks
 } from "../js/taskManager.js";
 
 describe("isValidTask", () => {
@@ -62,5 +63,21 @@ describe("getTaskStats", () => {
       pending: 2,
       completed: 1
     });
+  });
+});
+
+describe("clearCompletedTasks", () => {
+  it("elimina les tasques completades, conserva les pendents i no modifica l'array original", () => {
+    const tasks = [
+      { id: 1, text: "Tasca pendent", completed: false },
+      { id: 2, text: "Tasca completada", completed: true }
+    ];
+
+    const result = clearCompletedTasks(tasks);
+
+    expect(result).toEqual([tasks[0]]);
+    expect(result.some(task => task.completed)).toBe(false);
+    expect(result).not.toBe(tasks);
+    expect(tasks).toHaveLength(2);
   });
 });
